@@ -1,0 +1,199 @@
+# For--Ashu
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Ashu 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #ffb3c1;
+            --bg-cream: #fff5f5;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-cream);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background Hearts Animation */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Container & Cards */
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.1);
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .card.active { display: block; }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary-pink); font-size: 2.8rem; margin-bottom: 1rem; }
+        p { color: #555; font-size: 1.2rem; line-height: 1.6; }
+
+        /* Buttons */
+        .btn-group {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .btn-yes { background-color: var(--primary-pink); color: white; }
+        .btn-yes:hover { transform: scale(1.1); background-color: #ff1a4d; }
+
+        .btn-no { background-color: var(--soft-pink); color: white; position: relative; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Final Reveal Style */
+        .reveal-card { border: 4px dashed var(--soft-pink); background: #fffafb; }
+        .emoji { font-size: 4rem; display: block; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-hearts" id="heartContainer"></div>
+
+    <div class="container">
+        <div class="card active" id="scene1">
+            <span class="emoji">👋</span>
+            <h1>Hey Ashu...</h1>
+            <p>It’s Archit here. I’ve been thinking about something for a while now. Are you ready to answer a very important question?</p>
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="nextScene(2)">I'm ready! ✨</button>
+            </div>
+        </div>
+
+        <div class="card" id="scene2">
+            <span class="emoji">🌹</span>
+            <h1>Ashra Shabbir...</h1>
+            <p>You make every day feel like a celebration. So, I have to ask... <br><strong>Would you like to be my Valentine?</strong></p>
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="nextScene(3)">Yes, 1000x Yes! ❤️</button>
+                <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="tease()">No 😜</button>
+            </div>
+        </div>
+
+        <div class="card reveal-card" id="scene3">
+            <span class="emoji">💋</span>
+            <h1>My Valentine, officially!</h1>
+            <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary-pink);">
+                I knew you wanted to be my Valentine 💖
+            </p>
+            <p>Get ready for a day full of surprises, Ashu. I love you!</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        function nextScene(sceneNumber) {
+            // Hide all cards
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+            // Show target card
+            document.getElementById('scene' + sceneNumber).classList.add('active');
+
+            if(sceneNumber === 3) {
+                celebrate();
+            }
+        }
+
+        // The "Running Away" No Button Logic
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 50);
+            
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function tease() {
+            alert("Are you sure what you’re doing is what you really desire? 😏");
+        }
+
+        function celebrate() {
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+              if (timeLeft <= 0) return clearInterval(interval);
+
+              const particleCount = 50 * (timeLeft / duration);
+              confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+              confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+            }, 250);
+        }
+
+        // Background heart generator
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '110vh';
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            heart.style.opacity = Math.random();
+            heart.style.transition = 'transform 5s linear, opacity 5s';
+            document.getElementById('heartContainer').appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = '0';
+            }, 100);
+
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
